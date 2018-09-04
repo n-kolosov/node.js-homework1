@@ -1,0 +1,24 @@
+{
+  "name": "node.js-homework1",
+  "version": "1.0.0",
+  "description": "ЗАДАЧА - научиться работать с потоками (streams)\r  Написать HTTP-сервер для загрузки и получения файлов\r  - Все файлы находятся в директории files\r  - Структура файлов НЕ вложенная.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-kolosov/node.js-homework1.git"
+  },
+  "author": "Nikolay Kolosov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n-kolosov/node.js-homework1/issues"
+  },
+  "homepage": "https://github.com/n-kolosov/node.js-homework1#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.0.11"
+  }
+}
