@@ -4,36 +4,37 @@ const http = require('http')
 const fs = require('fs')
 const url = require('url')
 const path = require('path')
+const util = require('util')
+const readFile = util.promisify(fs.readFile)
 
 const ROOT = path.join(__dirname, 'files')
 
-http.createServer((req, res) => {
-  const filePath = url.parse(req.url).pathname
-
+http.createServer(async (req, res) => {
   switch (req.method) {
     case 'GET':
-      if (req.url === '/') {
-        res.end('Please enter the filename in adress line')
-      } else {
-        sendFile(filePath, res)
-      };
-  };
+      try {
+        if (req.url === '/') {
+          res.end('Please enter the filename')
+        } else {
+          const filePath = url.parse(req.url).pathname
+          await sendFile(filePath, res)
+        }
+      } catch (e) {
+        console.error(e)
+        res.statusCode = 404
+        res.end('404 - Not found')
+      }
+  }
 }).listen(3000)
 
-function sendFile (filePath, res) {
+async function sendFile (filePath, res) {
   // отдачу файлов следует переделать "правильно", через потоки, с нормальной обработкой ошибок
-  fs.readFile(ROOT + filePath, (err, content) => {
-    if (err) {
-      res.statusCode = 404
-      res.end('404 - Not found')
-    } else {
-      res.setHeader('Content-Type', checkExtention(filePath))
-      res.end(content)
-    }
-  })
+  const content = await readFile(ROOT + filePath)
+  res.setHeader('Content-Type', checkExtension(filePath))
+  res.end(content)
 };
 
-function checkExtention (filePath) {
+function checkExtension (filePath) {
   switch (path.extname(filePath)) {
     case '.txt':
       return 'text/plain;charset=utf-8'
